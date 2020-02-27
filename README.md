@@ -19,5 +19,5 @@ On PC's running Windows, ensure you have installed Rtools. Install devtools and 
 
 ```R
 install('devtools')
-devtools::install_github("embiuw/rSRDL")
+devtools::install_github("embiuw/LoggeR")
 ```
