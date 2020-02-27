@@ -1,7 +1,7 @@
 # LoggeR
 R package for reading and pre-processing whale and seabird sightings data collected using the IFAW Logger software.
 Logger stores data in a Microsoft Access database, and the LoggeR package contains functions for reading data directly from such a database.
-The package also contains function for initial pre-processing, such as correcting on- and off effort periods, and filtering out erroneous GPS data points.
+The package also contains function for initial pre-processing, such as correcting on- and off effort periods, and filtering out erroneous GPS data points, and then fill in missing GPS data in all tables.
 Finally, the package also contains a function for plotting sightings on an interactive map, using the `R leaflet` package. 
 The user can zoom and pan in the map, and sightings (represented by dots) can be clicked to obtain a tooltip containing information about the sighting.
 
