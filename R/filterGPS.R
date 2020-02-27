@@ -17,7 +17,7 @@
 #' @importFrom geosphere distHaversine
 #' @import leaflet
 #' @import htmlwidgets
-#' @import RColorBrewer
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 #'
 

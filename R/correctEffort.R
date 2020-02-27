@@ -23,6 +23,7 @@
 #' @import ggthemes
 #' @import xts
 #' @import plotly
+#' @importFrom RColorBrewer brewer.pal
 #' @export
 #'
 
