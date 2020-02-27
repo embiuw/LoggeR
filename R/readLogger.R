@@ -63,6 +63,7 @@ readLoggerTable <- function(theDB='Midnatsol_20191122', theTable='GpsData',
 #' @seealso \code{\link{readLoggerTable}} to read single table from sightings database,
 #'   \code{\link{correctEffort}} to correct inconsistencies in effort table,
 #'   \code{\link{filterGPS}} to flag bad GPS positions,
+#'   \code{\link{fillGPS}} To fill in missing GPS positions after filtering
 #'   \code{\link{mkLeaflet}} to make interactive Leaflet map of sightings.
 #' @author Martin Biuw
 #' @example
