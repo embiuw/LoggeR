@@ -29,6 +29,8 @@
 
 correctEffort <- function(data.list=midnat, include.birds=F, tGap=60, plotType='dygraph') {
 
+  require(RColorBrewer)
+
   effort <- data.list$effort
   effort <- effort[which(apply(effort[,c(3:6)], 1, function(x) !all(is.na(x)))),]
 
