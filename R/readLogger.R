@@ -45,14 +45,10 @@ readLoggerTable <- function(theDB='Midnatsol_20191122', theTable='GpsData',
   qry
 }
 
-##getPos <- function(tab=sightings, pos=gps) {
-##  merge(tab, pos[,match(c('Index', 'Latitude', 'Longitude'), names(pos))],
-##        by.x='GpsIndex', by.y='Index', all.x=T, all.y=F)
-##}
 
 #' \code{readLogger} Read all tables from Logger Access sightings database
 #'
-#' @param theDB Name of database as defined in ODBC data sources
+#' @param DB Name of database as defined in ODBC data sources
 #' @param whales Logical, indicating if whale sightings table should be read
 #' @param birds Logical, indicating if bird sightings tables should be read
 #' @param spatial Logical indicating if a table containing GPS data
