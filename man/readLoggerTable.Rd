@@ -41,6 +41,7 @@ The database must first be set up as a DSN data source.
 
 Other Logger sightings database functions: 
 \code{\link{correctEffort}()},
+\code{\link{fillGPS}()},
 \code{\link{filterGPS}()},
 \code{\link{mkLeaflet}()},
 \code{\link{readLogger}()}

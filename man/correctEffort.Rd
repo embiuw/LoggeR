@@ -14,10 +14,10 @@ correctEffort(
 \arguments{
 \item{data.list}{List of data frames created using \code{readLogger}}
 
-\item{include.birds}{Logical, indicating if bird sightings table should be used 
+\item{include.birds}{Logical, indicating if bird sightings table should be used
 when correcting effort. Default is FALSE, i.e. only whale sightings and effort tables are used.}
 
-\item{tGap}{Time (in minutes) at which new effort start is assumed even if first data record 
+\item{tGap}{Time (in minutes) at which new effort start is assumed even if first data record
 does not have a designated start ('SE') event}
 }
 \value{
@@ -31,9 +31,11 @@ and with all sightings and gps points allocated to transects (defined as contigu
 \code{\link{readLoggerTable}} to read single table from sightings database,
   \code{\link{readLogger}} to read entire sightings database,
   \code{\link{filterGPS}} to flag bad GPS positions,
+  \code{\link{fillGPS}} To fill in missing GPS positions after filtering
   \code{\link{mkLeaflet}} to make interactive Leaflet map of sightings.
 
 Other Logger sightings database functions: 
+\code{\link{fillGPS}()},
 \code{\link{filterGPS}()},
 \code{\link{mkLeaflet}()},
 \code{\link{readLoggerTable}()},

@@ -13,6 +13,8 @@ readLogger(
 )
 }
 \arguments{
+\item{DB}{Name of database as defined in ODBC data sources}
+
 \item{whales}{Logical, indicating if whale sightings table should be read}
 
 \item{birds}{Logical, indicating if bird sightings tables should be read}
@@ -22,8 +24,6 @@ should be returned as a data frame (default) or as a SpatialPointsDataFrame}
 
 \item{interval}{Interval setting the downscaling of GPS data.
 Read in every \code{interval} line from data table.}
-
-\item{theDB}{Name of database as defined in ODBC data sources}
 }
 \value{
 Returns a list of data frames corresponding to desired tables in the database.
@@ -40,10 +40,12 @@ The database must first be set up as a DSN data source.
 \code{\link{readLoggerTable}} to read single table from sightings database,
   \code{\link{correctEffort}} to correct inconsistencies in effort table,
   \code{\link{filterGPS}} to flag bad GPS positions,
+  \code{\link{fillGPS}} To fill in missing GPS positions after filtering
   \code{\link{mkLeaflet}} to make interactive Leaflet map of sightings.
 
 Other Logger sightings database functions: 
 \code{\link{correctEffort}()},
+\code{\link{fillGPS}()},
 \code{\link{filterGPS}()},
 \code{\link{mkLeaflet}()},
 \code{\link{readLoggerTable}()}

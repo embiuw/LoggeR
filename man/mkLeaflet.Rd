@@ -9,7 +9,7 @@ mkLeaflet(data.list = list(midnat, fram), birds = F)
 \arguments{
 \item{data.list}{List of sublists, each of which contains data frames created using \code{readLogger}}
 
-\item{birds}{Logical, indicating if map should present birds (TRUE) or whales (FALSE). 
+\item{birds}{Logical, indicating if map should present birds (TRUE) or whales (FALSE).
 Default is to present whales. Both cannot (currently) be shown on the same map.}
 }
 \value{
@@ -27,9 +27,11 @@ NOTE! Computer must currently be connected to the internet in order to render th
   \code{\link{readLogger}} to read entire sightings database,
   \code{\link{correctEffort}} tto correct inconsistencies in effort table,
   \code{\link{filterGPS}} to flag bad GPS positions,
+  \code{\link{fillGPS}} To fill in missing GPS positions after filtering
 
 Other Logger sightings database functions: 
 \code{\link{correctEffort}()},
+\code{\link{fillGPS}()},
 \code{\link{filterGPS}()},
 \code{\link{readLoggerTable}()},
 \code{\link{readLogger}()}
