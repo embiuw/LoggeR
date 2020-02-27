@@ -18,7 +18,7 @@
 #' @import leaflet
 #' @import htmlwidgets
 #' @import leaflet.minicharts
-#' @importFrom RColorBrewer brewer.pal
+#' @import RColorBrewer
 #' @importFrom randomcoloR randomColor
 #' @export
 #'
