@@ -15,7 +15,7 @@ NOTE 4. In order to display the map background tiles, the computer must be onlin
 
 
 # Installation
-On PC's running Windows, ensure you have installed [Rtools](https://cran.r-project.org/bin/windows/Rtools/). Install devtools and its dependencies, and finally install the LoggeR package:
+On PC's running Windows, ensure you have installed [Rtools](https://cran.r-project.org/bin/windows/Rtools/). Install `devtools` and its dependencies, and finally install the `LoggeR` package:
 
 ```R
 install('devtools')
