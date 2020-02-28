@@ -19,5 +19,5 @@ On PC's running Windows, ensure you have installed [Rtools](https://cran.r-proje
 
 ```R
 install('devtools')
-devtools::install_github("embiuw/LoggeR")
+devtools::install_github("embiuw/LoggeR", build_vignettes = TRUE)
 ```
