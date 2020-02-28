@@ -9,9 +9,10 @@
 #' @family Logger sightings database functions
 #' @seealso \code{\link{readLoggerTable}} to read single table from sightings database,
 #'   \code{\link{readLogger}} to read entire sightings database,
-#'   \code{\link{correctEffort}} tto correct inconsistencies in effort table,
+#'   \code{\link{correctEffort}} to correct inconsistencies in effort table,
 #'   \code{\link{filterGPS}} to flag bad GPS positions,
-#'   \code{\link{fillGPS}} To fill in missing GPS positions after filtering
+#'   \code{\link{fillGPS}} to fill in missing GPS positions after filtering,
+#'   \code{\link{convert2spatial}} to convert selected parts of sightings data list to shapefiles.
 #' @author Martin Biuw
 #' @example
 #' mkLeaflet()
