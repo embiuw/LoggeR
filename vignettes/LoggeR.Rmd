@@ -13,8 +13,9 @@ vignette: >
 knitr::opts_chunk$set(echo = T, eval=F)
 ```
 
-# Reading data from a Logger Access database
-Communicating with a Microsoft Access database from R or Rstudio is not straightforward. Due to lack of driver support and other issues, this cannot be done when running R/Rstudio in 64-bit mode. You will instead have to change your Rstudio session to run in 32-bit mode. Even when running R/Rstudio in 32-bit mode, there are a few steps required before you can link to a specific Access database. Most importantly, the database must first be set up as a 32-bit ODBC data source. See [this page] (https://support.office.com/en-us/article/administer-odbc-data-sources-b19f856b-5b9b-48c9-8b93-07484bfab5a7) for instructions.
+</br>
+## Reading data from a Logger Access database
+Communicating with a Microsoft Access database from R or Rstudio is not straightforward. Due to lack of driver support and other issues, this cannot be done when running R/Rstudio in 64-bit mode. You will instead have to change your Rstudio session to run in 32-bit mode. Even when running R/Rstudio in 32-bit mode, there are a few steps required before you can link to a specific Access database. Most importantly, the database must first be set up as a 32-bit ODBC data source. See [this page] (<https://support.office.com/en-us/article/administer-odbc-data-sources-b19f856b-5b9b-48c9-8b93-07484bfab5a7>) for instructions.
 
 Here we assume that the Midnatsol and Fram databases have been set up as ODBC data sources with the names "Midnatsol_20191122" and "Fram_20191202" respectively, following the instructions in the above link. You can then access them using the \code{readLogger} function: 
 
@@ -36,8 +37,8 @@ load('fram.RData')
 
 Whichever method is used, you will end up with list representations of the databases, containing data frames for each table holding specific data. The \code{gps} data frame holds GPS position data at regular intervals (by default 1 minute), the \code{effort} data frame holds data on effort periods, observer rotation, weather observations etc., \code{sightings} holds data on whale sightings, \code{bsight} holds data on 10-min forward quadrant bird counts, \code{snapshot} holds data on snapshot bird couts behind the vessel, and \code{birdSpecies} holds data listing bird species codes and their respective common names.   
 
-
-# Processing imported data lists
+</br>
+## Processing imported data lists
 Before conducting any in-depth data analyses, the data has to be cleaned and checked. This is done in several steps. First erroneous effort start and end times are corrected using:
 
 ```{r correctEffort}
@@ -45,7 +46,7 @@ midnat <- correctEffort()
 fram <- correctEffort(fram)
 ```
 
-In addition to returning a modified version of the data list, where 'real' effort start and end times are given in new columns \code{real.start} and \code{real.end}, the function opens a browser window containing an interactive time chart where all events in the effort table are represented as dots. You can zoom and pan through this time chart to check that teh function has correctly determined appropriate start and end times. Note that, as when reading data from Access, all other functions uses Midnatsol data as the default. To change to Fram data this needs to be explicitly stated in the call to the functions.   
+In addition to returning a modified version of the data list, where 'real' effort start and end times are given in new columns `r real.start` and `r real.end`}`, the function opens a browser window containing an interactive time chart where all events in the effort table are represented as dots. You can zoom and pan through this time chart to check that teh function has correctly determined appropriate start and end times. Note that, as when reading data from Access, all other functions uses Midnatsol data as the default. To change to Fram data this needs to be explicitly stated in the call to the functions.   
 
 Because the USB GPS may sometimes malfunction, it may be necessary to clean up the position data in the GPS table: 
 
@@ -54,7 +55,7 @@ midnat <- filterGPS()
 fram <- filterGPS(fram, maxSpeed=25)
 ```
 
-The default value for \code{maxSpeed} is 300 knots. While this is obviously an unrealistic speed for any sea-going vessel, this proved to be the most appropriate for the Midnatsol data. This may e because of small errors in the time stamp, giving large errors in estimated speed for (accurate) positions very close in time. For the Fram dataset, this needs to be changed to a much lower value. You can experiment with different \code{maxSpeed}, and check the effect in the interactive map that opens up in a browser window.   
+The default value for `r maxSpeed` is 300 knots. While this is obviously an unrealistic speed for any sea-going vessel, this proved to be the most appropriate for the Midnatsol data. This may e because of small errors in the time stamp, giving large errors in estimated speed for (accurate) positions very close in time. For the Fram dataset, this needs to be changed to a much lower value. You can experiment with different `r maxSpeed`, and check the effect in the interactive map that opens up in a browser window.   
 
 Once the GPS data has been corrected, missing positions in other data tables can be filled in by linear interpolation on time:
 
@@ -70,9 +71,9 @@ midnat <- fillGPS(replace.all=T)
 fram <- fillGPS(fram, replace.all=T)
 ```
 
-
-# Data display on interactive maps
-Once the data have been imported and cleaned up, they can be displayed on an interactive map (similar to the map that displays when running the \code{filterGPS} function). Currently only whale data can be shown, but the function will be expanded to also allow bird data to be displayed. The function can be run either separately for a specific data set, or for several datasets combined: 
+</br>
+## Data display on interactive maps
+Once the data have been imported and cleaned up, they can be displayed on an interactive map (similar to the map that displays when running the `r filterGPS` function). Currently only whale data can be shown, but the function will be expanded to also allow bird data to be displayed. The function can be run either separately for a specific data set, or for several datasets combined: 
 
 ```{r mkLeaflet}
 mkLeaflet(list(midnat))
@@ -80,8 +81,9 @@ mkLeaflet(list(fram))
 mkLeaflet(list(midnat, fram))
 ```
 
-# Exporting data to GIS software
-To create a shapefile of all tables in a data list, you can use the function \code{convert2spatial}:
+</br>
+## Exporting data to GIS software
+To create a shapefile of all tables in a data list, you can use the function `r convert2spatial`:
 
 ```{r toSpatial}
 convert2spatial()
@@ -92,7 +94,7 @@ By default, this saves shapefiles to a subdirectory of the working directory, bu
 
 By default, the function saves data in geographic (Lat/Lon) coordinates, but it can also be saved in UTM. This can be accomplished by specifying the relevant UTM zone and hemisphere. Fo instance, to change the data collected in the Scotia Sea to UTM format:
 
-```{r}
+```{r toSpatialUTM}
 convert2spatial(zone=22)
 convert2spatial(fram, zone=22)
 ```
