@@ -1,12 +1,12 @@
 Package: LoggeR
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Read and process whale and seabird sightings from Logger database 
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Author: Martin Biuw
+Maintainer: Martin Biuw <martin.biuw@hi.no>
+Description: Contains functions for reading data from a Microsoft Access database 
+    containing sightings data collected using the IFAW software system Logger.
+License: GNU General Public License (GPL)
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.0.2
