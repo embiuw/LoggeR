@@ -45,7 +45,8 @@ convert2spatial <- function(data.list=midnat, zone=22, hemisphere='south',
   coordinates(effort) <- c('Longitude', 'Latitude')
   proj4string(effort) <- CRS(p4sLL)
   if(!is.na(zone)) effort <- spTransform(effort, CRS(p4sUTM))
-  writeOGR(effort, paste0(shp.dir, '/effort.shp'), layer='GpsTime')
+  writeOGR(effort, paste0(shp.dir, '/effort.shp'),
+           layer='GpsTime', driver='ESRI Shapefile')
 
   if(whales) {
     sightings <- data.list$sightings
