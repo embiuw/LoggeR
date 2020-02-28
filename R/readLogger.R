@@ -252,11 +252,19 @@ readLogger <- function(DB='Midnatsol_20191122', whales=T, birds=T,
   }
 
   if(birds & !whales) {
-    list(gps=gps, effort=effort, sightings=bsight, snapshot=bsnap, birdSpecies=birdSpecies)
+    if(class(bsnap)=='data.frame') {
+      list(gps=gps, effort=effort, sightings=bsight, snapshot=bsnap, birdSpecies=birdSpecies)
+    } else {
+      list(gps=gps, effort=effort, sightings=bsight, birdSpecies=birdSpecies)
+    }
   }
 
   if(birds & whales) {
-    list(gps=gps, effort=effort, sightings=sightings, bsight=bsight, snapshot=bsnap, birdSpecies=birdSpecies)
+    if(class(bsnap)=='data.frame') {
+      list(gps=gps, effort=effort, sightings=sightings, bsight=bsight, snapshot=bsnap, birdSpecies=birdSpecies)
+    } else {
+      list(gps=gps, effort=effort, sightings=sightings, bsight=bsight, birdSpecies=birdSpecies)
+    }
   }
 }
 
