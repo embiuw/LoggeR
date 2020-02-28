@@ -65,7 +65,7 @@ fram <- fillGPS(fram)
 
 There is also an option to replace all existing positions with new interpolated ones:
 
-```{r fillGPS}
+```{r replaceGPS}
 midnat <- fillGPS(replace.all=T)
 fram <- fillGPS(fram, replace.all=T)
 ```

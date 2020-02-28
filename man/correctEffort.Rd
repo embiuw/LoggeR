@@ -8,7 +8,7 @@ correctEffort(
   data.list = midnat,
   include.birds = F,
   tGap = 60,
-  plotType = "dygraph"
+  plotType = "plotly"
 )
 }
 \arguments{

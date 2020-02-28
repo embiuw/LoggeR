@@ -6,7 +6,7 @@
 \usage{
 convert2spatial(
   data.list = midnat,
-  zone = 22,
+  zone = NA,
   hemisphere = "south",
   whales = T,
   birds = T,
