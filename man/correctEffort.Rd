@@ -31,10 +31,12 @@ and with all sightings and gps points allocated to transects (defined as contigu
 \code{\link{readLoggerTable}} to read single table from sightings database,
   \code{\link{readLogger}} to read entire sightings database,
   \code{\link{filterGPS}} to flag bad GPS positions,
-  \code{\link{fillGPS}} To fill in missing GPS positions after filtering
-  \code{\link{mkLeaflet}} to make interactive Leaflet map of sightings.
+  \code{\link{fillGPS}} to fill in missing GPS positions after filtering
+  \code{\link{mkLeaflet}} to make interactive Leaflet map of sightings,
+  \code{\link{convert2spatial}} to convert selected parts of sightings data list to shapefiles.
 
 Other Logger sightings database functions: 
+\code{\link{convert2spatial}()},
 \code{\link{fillGPS}()},
 \code{\link{filterGPS}()},
 \code{\link{mkLeaflet}()},
