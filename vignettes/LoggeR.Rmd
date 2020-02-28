@@ -83,7 +83,7 @@ mkLeaflet(list(midnat, fram))
 
 </br>
 ## Exporting data to GIS software
-To create a shapefile of all tables in a data list, you can use the function `r convert2spatial`:
+To create a shapefile of all tables in a data list, you can use the function *convert2spatial*:
 
 ```{r toSpatial}
 convert2spatial()
