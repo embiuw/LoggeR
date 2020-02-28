@@ -58,7 +58,7 @@ convert2spatial <- function(data.list=midnat, zone=22, hemisphere='south',
   }
 
   if(birds) {
-    if('bsight' %n% names(data.list)) {
+    if('bsight' %in% names(data.list)) {
       bsight <- data.list$bsight
       coordinates(bsight) <- c('Longitude', 'Latitude')
       proj4string(bsight) <- CRS(p4sLL)
@@ -66,7 +66,7 @@ convert2spatial <- function(data.list=midnat, zone=22, hemisphere='south',
       writeOGR(bsight, paste0(shp.dir, '/bsight.shp'),
                layer='GpsTime', driver='ESRI Shapefile')
     }
-    if('snapshot' %n% names(data.list)) {
+    if('snapshot' %in% names(data.list)) {
       bsnap <- data.list$snapshot
       coordinates(bsnap) <- c('Longitude', 'Latitude')
       proj4string(bsnap) <- CRS(p4sLL)
