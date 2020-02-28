@@ -24,7 +24,7 @@
 #' @export
 #'
 
-convert2spatial <- function(data.list=midnat, zone=22, hemisphere='south',
+convert2spatial <- function(data.list=midnat, zone=NA, hemisphere='south',
                             whales=T, birds=T, shp.dir='./shapefiles') {
   require(rgdal)
 

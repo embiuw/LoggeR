@@ -28,7 +28,7 @@
 #' @export
 #'
 
-correctEffort <- function(data.list=midnat, include.birds=F, tGap=60, plotType='dygraph') {
+correctEffort <- function(data.list=midnat, include.birds=F, tGap=60, plotType='plotly') {
 
   require(RColorBrewer)
   require(htmlwidgets)
