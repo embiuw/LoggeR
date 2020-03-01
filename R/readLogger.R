@@ -160,6 +160,10 @@ readLogger <- function(DB='Midnatsol_20191122', whales=T, birds=T,
   if(birds){
     bsight <- readLoggerTable(theDB=DB, theTable='Sightings_Seabirds')
     bsnap <- try(readLoggerTable(theDB=DB, theTable='Sightings_SeabirdsSnapshot'), silent=T)
+    if(class(bsnap)!='data.frame') {
+      bsnap <- bsight[grep('SNAPSHOT', bsight$Comments),]
+      bsight <- bsight[-grep('SNAPSHOT', bsight$Comments),]
+    }
 
     names(bsight) <- gsub(' ', '_', names(bsight))
     names(bsnap) <- gsub(' ', '_', names(bsnap))
@@ -200,6 +204,12 @@ readLogger <- function(DB='Midnatsol_20191122', whales=T, birds=T,
                                                        'PG-Mac', 'PRO-Fulmar',
                                                        'ST-Skua', 'LA-KelpGull',
                                                        'PH-Shag', 'LA-Tern', 'PRO-Shearwater')
+   if(length(grep('Fulm', names(bsight)))>1) {
+     which.fulm <- grep('Fulm', names(bsight))
+     bsight[,which.fulm[1]] <- apply(bsight[,which.fulm], 1, sum, na.rm=T)
+     bsight <- bsight[,-which.fulm[2]]
+   }
+
 
    if(class(bsnap)=='data.frame') {
      names(bsnap)[match(c("PT-Stormzy", "PT_Diving", "PT_Other", "PG-Linux", "PG-BigMac", "FL-South",
@@ -208,6 +218,11 @@ readLogger <- function(DB='Midnatsol_20191122', whales=T, birds=T,
                                                                    'PG-Mac', 'PRO-Fulmar',
                                                                    'ST-Skua', 'LA-KelpGull',
                                                                    'PH-Shag', 'LA-Tern', 'PRO-Shearwater')
+     if(length(grep('Fulm', names(bsnap)))>1) {
+       which.fulm <- grep('Fulm', names(snap))
+       snap[,which.fulm[1]] <- apply(snap[,which.fulm], 1, sum, na.rm=T)
+       snap <- snap[,-which.fulm[2]]
+     }
    }
 
    species[match(c("PT-Stormzy", "PT_Diving", "PT_Other", "PG-Linux", "PG-BigMac", "FL-South",
