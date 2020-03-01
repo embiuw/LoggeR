@@ -5,11 +5,11 @@ The package also contains function for initial pre-processing, such as correctin
 Finally, the package also contains a function for plotting sightings on an interactive map, using the `R leaflet` package. 
 The user can zoom and pan in the map, and sightings (represented by dots) can be clicked to obtain a tooltip containing information about the sighting.
 
-NOTE 1. The Access functions will only work on Windows, while the PostgreSQL functions should be platform-independent.
+NOTE 1. The `readLogger` functions will only work on Windows, while all other functions should be platform-independent.
 
 NOTE 2. For the package to recognise the Access databases, they will have to be set up as 32-bit ODBC data sources. See [here](https://support.office.com/en-us/article/administer-odbc-data-sources-b19f856b-5b9b-48c9-8b93-07484bfab5a7) for instructions.
 
-NOTE 3. R (RStudio) must to run in 32-bit mode, otherwise the Access functions will not run.
+NOTE 3. R (RStudio) must to run in 32-bit mode, otherwise the Access functions will not run. To check/change this in Rstudio, go to 'Tools -> Global Options... and check current mode at the top, under 'R version'.
 
 NOTE 4. In order to display the map background tiles, the computer must be online. Offline use requires map tiles to have been previously downloaded (using e.g. the RGoogleMaps package, see example [here](http://rgooglemaps.r-forge.r-project.org/OfflineMaps-RgoogleMaps-leaflets.html)).
 
@@ -19,5 +19,5 @@ On PC's running Windows, ensure you have installed [Rtools](https://cran.r-proje
 
 ```R
 install('devtools')
-devtools::install_github("embiuw/LoggeR")
+devtools::install_github("embiuw/LoggeR", build_vignettes = TRUE)
 ```
