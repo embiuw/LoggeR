@@ -42,8 +42,8 @@ mkLeaflet <- function(data.list=list(midnat, fram), birds=F) {
 
       spCols <- vector('character')
       for(i in 1:length(gHues)) {
-        spCols <- c(spCols, randomColor(length(grep(groups[i], nSpecies)),
-                                        hue=gHues[i]))
+        nSpecies <- length(grep(groups[i], data.list[[1]]$birdSpecies$Code))
+        spCols <- c(spCols, randomColor(nSpecies, hue=gHues[i]))
       }
     } else {
        spp <- do.call('rbind', lapply(data.list, function(x) data.frame(Species=x$sightings$Species, NumSP=x$sightings$NumSP)))
@@ -67,8 +67,8 @@ mkLeaflet <- function(data.list=list(midnat, fram), birds=F) {
 
       spCols <- vector('character')
       for(i in 1:length(gHues)) {
-        spCols <- c(spCols, randomColor(length(grep(groups[i], nSpecies)),
-                                        hue=gHues[i]))
+        nSpecies <- length(grep(groups[i], data.list[[1]]$birdSpecies$Code))
+        spCols <- c(spCols, randomColor(nSpecies, hue=gHues[i]))
       }
     } else {
       spp <- data.frame(Species=data.list[[1]]$sightings$Species, NumSP=data.list[[1]]$sightings$NumSP)
@@ -106,16 +106,53 @@ mkLeaflet <- function(data.list=list(midnat, fram), birds=F) {
 
     if(birds) {
       for(i in 1:nrow(dl$bsight)) {
-        piemat <- dl$bsight[i,match(dl$birdSpecies$Code, names(dl$bsight))]
-        if(!all(is.na(piemat))) {
-          grps <- dl$birdSpecies$Group[which(!is.na(piemat))]
-          piemat <- piemat[,which(!is.na(piemat))]
-          grp.sum <- aggregate(as.numeric(piemat), list(grps), sum)
-          m <- addMinicharts(m, dl$bsight$Longitude[i],
-##                           fillColor=spCols[match(grp.sum$Group.1, dl$birdSpecies$Group)],
-                             dl$bsight$Latitude[i], grp.sum$x, type='pie')
+       piemat <- dl$bsight[i,match(dl$birdSpecies$Code, names(dl$bsight))] %>%
+         pivot_longer(names(dl$bsight)[match(dl$birdSpecies$Code, names(dl$bsight))],
+                      names_to='Code', values_to='N')
+       piemat <- piemat[which(!is.na(piemat$N)),]
+       which.sp <- match(piemat$Code, dl$birdSpecies$Code)
+       piemat$Species <- dl$birdSpecies$CommonName[which.sp]
+
+       if(nrow(piemat)>0) {
+          m <- addCircleMarkers(m, dl$bsight$Longitude[i],
+                                dl$bsight$Latitude[i],
+                                radius=5*log(piemat$N+2),
+                                stroke=T, fillOpacity=0.8,
+                                col=spCols[which.sp],
+                                clusterOptions = markerClusterOptions(radius=5*log(sum(piemat$N)+2),
+                                                                      spiderfyDistanceMultiplier=1.5,
+                                                                      spiderLegPolylineOptions = list(col='white')),
+                                popup=paste('<center>Species:<b>', piemat$Species, '<br></b>Group size:<b>',
+                                            piemat$N, '<br></b>Time sighted: <b>',
+                                            format(dl$bsight$GpsTime[i], '%b-%d %H:%M'), ' UTC<br></b>Sighted by: <b>',
+                                            dl$bsight[i,match('Seen-By', names(dl$bsight))], '</b></center>'))
         }
       }
+
+      for(i in 1:nrow(dl$snapshot)) {
+        piemat <- dl$snapshot[i,match(dl$birdSpecies$Code, names(dl$snapshot))] %>%
+          pivot_longer(names(dl$snapshot)[match(dl$birdSpecies$Code, names(dl$snapshot))],
+                       names_to='Code', values_to='N')
+        piemat <- piemat[which(!is.na(piemat$N)),]
+        which.sp <- match(piemat$Code, dl$birdSpecies$Code)
+        piemat$Species <- dl$birdSpecies$CommonName[which.sp]
+
+        if(nrow(piemat)>0) {
+          m <- addCircleMarkers(m, dl$snapshot$Longitude[i],
+                                dl$snapshot$Latitude[i],
+                                radius=5*log(piemat$N+2),
+                                stroke=T, fillOpacity=0.8,
+                                col=spCols[which.sp],
+                                clusterOptions = markerClusterOptions(radius=5*log(sum(piemat$N)+2),
+                                                                      spiderfyDistanceMultiplier=1.5,
+                                                                      spiderLegPolylineOptions = list(col='white')),
+                                popup=paste('<center>Species:<b>', piemat$Species, '<br></b>Group size:<b>',
+                                            piemat$N, '<br></b>Time sighted: <b>',
+                                            format(dl$snapshot$GpsTime[i], '%b-%d %H:%M'), ' UTC<br></b>Sighted by: <b>',
+                                            dl$snapshot[i,match('Seen-By', names(dl$snapshot))], '</b></center>'))
+        }
+      }
+
     } else {
       for(i in 1:nlevels(dl$sightings$Species)) {
         grp <- levels(dl$sightings$Species)[i]
