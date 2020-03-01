@@ -76,14 +76,18 @@ fram <- fillGPS(fram, replace.all=T)
 </br>
 
 # Data display on interactive maps
-Once the data have been imported and cleaned up, they can be displayed on an interactive map (similar to the map that displays when running the `filterGPS` function). Currently only whale data can be shown, but the function will be expanded to also allow bird data to be displayed. The function can be run either separately for a specific data set, or for several datasets combined: 
+Once the data have been imported and cleaned up, they can be displayed on an interactive map (similar to the map that displays when running the `filterGPS` function). The function can be run either separately for a specific data set, or for several datasets combined: 
 
 ```{r mkLeaflet}
 mkLeaflet(list(midnat))
 mkLeaflet(list(fram))
 mkLeaflet(list(midnat, fram))
 ```
+By default, whale data is shown, but alternatively bird data can be displayed:
 
+```{r mkLeafletBirds}
+mkLeaflet(list(midnat), birds=T)
+```
 </br>
 
 # Exporting data to GIS software
