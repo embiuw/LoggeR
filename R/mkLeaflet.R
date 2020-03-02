@@ -30,6 +30,7 @@ mkLeaflet <- function(data.list=list(midnat, fram), birds=F) {
   require(RColorBrewer)
   require(randomcoloR)
   require(leaflet.minicharts)
+  require(tidyr)
 
   if(length(data.list)>1) {
     set.view <- list(Lon=mean(unlist(lapply(data.list, function(x) x$gps$Longitude))),
@@ -105,10 +106,12 @@ mkLeaflet <- function(data.list=list(midnat, fram), birds=F) {
     }
 
     if(birds) {
+      smatch <- match(dl$birdSpecies$Code, names(dl$bsight))
+      smatch <- smatch[which(!is.na(smatch))]
       for(i in 1:nrow(dl$bsight)) {
-       piemat <- dl$bsight[i,match(dl$birdSpecies$Code, names(dl$bsight))] %>%
-         pivot_longer(names(dl$bsight)[match(dl$birdSpecies$Code, names(dl$bsight))],
-                      names_to='Code', values_to='N')
+        piemat <- dl$bsight[i,smatch] %>%
+           pivot_longer(names(dl$bsight)[smatch],
+                        names_to='Code', values_to='N')
        piemat <- piemat[which(!is.na(piemat$N)),]
        which.sp <- match(piemat$Code, dl$birdSpecies$Code)
        piemat$Species <- dl$birdSpecies$CommonName[which.sp]
@@ -122,16 +125,19 @@ mkLeaflet <- function(data.list=list(midnat, fram), birds=F) {
                                 clusterOptions = markerClusterOptions(radius=5*log(sum(piemat$N)+2),
                                                                       spiderfyDistanceMultiplier=1.5,
                                                                       spiderLegPolylineOptions = list(col='white')),
-                                popup=paste('<center>Species:<b>', piemat$Species, '<br></b>Group size:<b>',
+                                popup=paste('<center>10-minute sector count<br>Species:<b>', piemat$Species, '<br></b>Group size:<b>',
                                             piemat$N, '<br></b>Time sighted: <b>',
                                             format(dl$bsight$GpsTime[i], '%b-%d %H:%M'), ' UTC<br></b>Sighted by: <b>',
                                             dl$bsight[i,match('Seen-By', names(dl$bsight))], '</b></center>'))
         }
       }
 
+      smatch <- match(dl$birdSpecies$Code, names(dl$snapshot))
+      smatch <- smatch[which(!is.na(smatch))]
+
       for(i in 1:nrow(dl$snapshot)) {
-        piemat <- dl$snapshot[i,match(dl$birdSpecies$Code, names(dl$snapshot))] %>%
-          pivot_longer(names(dl$snapshot)[match(dl$birdSpecies$Code, names(dl$snapshot))],
+        piemat <- dl$snapshot[i,smatch] %>%
+          pivot_longer(names(dl$snapshot)[smatch],
                        names_to='Code', values_to='N')
         piemat <- piemat[which(!is.na(piemat$N)),]
         which.sp <- match(piemat$Code, dl$birdSpecies$Code)
@@ -146,7 +152,7 @@ mkLeaflet <- function(data.list=list(midnat, fram), birds=F) {
                                 clusterOptions = markerClusterOptions(radius=5*log(sum(piemat$N)+2),
                                                                       spiderfyDistanceMultiplier=1.5,
                                                                       spiderLegPolylineOptions = list(col='white')),
-                                popup=paste('<center>Species:<b>', piemat$Species, '<br></b>Group size:<b>',
+                                popup=paste('<center>Aft snapshot<br>Species:<b>', piemat$Species, '<br></b>Group size:<b>',
                                             piemat$N, '<br></b>Time sighted: <b>',
                                             format(dl$snapshot$GpsTime[i], '%b-%d %H:%M'), ' UTC<br></b>Sighted by: <b>',
                                             dl$snapshot[i,match('Seen-By', names(dl$snapshot))], '</b></center>'))

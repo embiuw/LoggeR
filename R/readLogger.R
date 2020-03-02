@@ -256,6 +256,7 @@ readLogger <- function(DB='Midnatsol_20191122', whales=T, birds=T,
    group[grep('PT-Giant', species)] <- 'Giant petrels'
 
    birdSpecies <- data.frame(Code=species, CommonName=common, stringsAsFactors=F)
+   birdSpecies <- birdSpecies[which(!is.na(match(birdSpecies$Code, names(bsight)))),]
 
   }
 
