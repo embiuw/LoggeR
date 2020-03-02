@@ -220,7 +220,7 @@ readLogger <- function(DB='Midnatsol_20191122', whales=T, birds=T,
                                                                    'PH-Shag', 'LA-Tern', 'PRO-Shearwater')
      if(length(grep('Fulm', names(bsnap)))>1) {
        which.fulm <- grep('Fulm', names(bsnap))
-       bsnap[,which.fulm[1]] <- apply(snap[,which.fulm], 1, sum, na.rm=T)
+       bsnap[,which.fulm[1]] <- apply(bsnap[,which.fulm], 1, sum, na.rm=T)
        bsnap <- bsnap[,-which.fulm[2]]
      }
    }
