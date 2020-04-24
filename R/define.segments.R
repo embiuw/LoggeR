@@ -57,11 +57,12 @@ defineSegments <- function(data.list=fram, seglen=1, units='nm') {
     }
   }  
   
-  pb <- winProgressBar(title = "Defining trip segments", min = 0,
-                       max = length(seg.start), width = 300)
+  pb <- txtProgressBar(title = "Defining trip segments", min = 0,
+                       max = length(seg.start), style=3)
+  
   
   for(i in 2:length(seg.start)) {
-    setWinProgressBar(pb, i, title=paste("Defining trip segments",
+    setTxtProgressBar(pb, i, title=paste("Defining trip segments",
                                          round(i/length(seg.start)*100, 0),
                                          "% done"))
     eff.within <- which(data.list$effort$PCTime>=seg.start[i-1] &
