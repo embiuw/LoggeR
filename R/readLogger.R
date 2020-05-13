@@ -1,15 +1,15 @@
 #' \code{readLoggerTable} Read table from Logger Access database
 #'
-#' @param theDB Name of database as defined in ODBC data sources
+#' @param theDB Filename of the database
 #' @param theTable Name of the table to read
+#' @param path Path to the directory where database file is located.
 #' @param to.spatial Logical indicating if a table containing GPS data
 #' should be returned as a data frame (default) or as a SpatialPointsDataFrame
 #' @param int Interval setting the downscaling of GPS data.
 #' Read in every \code{int} line from data table.
 #' @return Returns a data frame corresponding to the desired table.
-#' @details The database must first be set up as a DSN data source.
-#'   Note! On Windows, only 32-bit data sources can be used,
-#'   and R (or RStudio) has to be run in 32-bit mode for these functions to work.
+#' @details This is an alternative version taht links directly to a database,
+#' without the need for setting up a DNS data source. It should also run under 64-bit Windows.
 #' @family Logger sightings database functions
 #' @seealso \code{\link{readLogger}} to read entire sightings database,
 #'   \code{\link{correctEffort}} to correct inconsistencies in effort table,
@@ -18,15 +18,13 @@
 #'   \code{\link{mkLeaflet}} to make interactive Leaflet map of sightings.
 #'   \code{\link{convert2spatial}} to convert selected parts of sightings data list to shapefiles.
 #' @author Martin Biuw
-#' @example
-#' gps <- readLoggerTable()
 #' @importFrom RODBC odbcConnect sqlQuery odbcClose
 #' @import rgdal
 #' @import sp
 #' @export
 
-readLoggerTable <- function(theDB='Midnatsol_20191122', theTable='GpsData',
-                       to.spatial=F, int=1) {
+readLoggerTable <- function(theDB, theTable='GpsData',
+                            path, to.spatial=F, int=1) {
   ##require(RODBC)
   ##con <- odbcConnect(theDB)
 
@@ -37,7 +35,7 @@ readLoggerTable <- function(theDB='Midnatsol_20191122', theTable='GpsData',
   if(running=="x86") {
     con <- dbConnect(odbc::odbc(), theDB)
   } else {
-    theDB <- paste(thePath, theDB, sep='/')
+    theDB <- paste(path, theDB, sep='/')
     con <- dbConnect(drv = odbc(), .connection_string = paste0("Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=",
                                                                theDB,
                                                                ";"))
@@ -71,6 +69,7 @@ readLoggerTable <- function(theDB='Midnatsol_20191122', theTable='GpsData',
 #' should be returned as a data frame (default) or as a SpatialPointsDataFrame
 #' @param interval Interval setting the downscaling of GPS data.
 #' Read in every \code{interval} line from data table.
+#' @param thePath Path to the directory where the database file is located.
 #' @return Returns a list of data frames corresponding to desired tables in the database.
 #' @details The database must first be set up as a DSN data source.
 #'   Note! On Windows, only 32-bit data sources can be used,
@@ -84,14 +83,15 @@ readLoggerTable <- function(theDB='Midnatsol_20191122', theTable='GpsData',
 #'   \code{\link{convert2spatial}} to convert selected parts of sightings data list to shapefiles.
 #' @author Martin Biuw
 #' @example
-#' midnat <- readLogger()
+#' midnat <- readLogger(DB='Midnatsol_Ant2019_2091122_20191228.mdb', thePath='C:/Users/a5406/Documents/Hurtigruten/Data/2019_2020/Midnatsol')
 #' @import RODBC
 #' @import rgdal
 #' @export
 
-readLogger <- function(DB='Midnatsol_20191122', whales=T, birds=T,
-                       spatial=F, interval=60) {
-  gps <- readLoggerTable(theDB=DB, to.spatial = spatial)
+readLogger <- function(DB='Midnatsol_Ant2019_2091122_20191228.mdb', whales=T, birds=T,
+                       spatial=F, interval=60,
+                       thePath='C:/Users/a5406/Documents/Hurtigruten/Data/2019_2020/Midnatsol') {
+  gps <- readLoggerTable(theDB=DB, to.spatial = spatial, path=thePath)
 
   names(gps) <- gsub(' ', '_', names(gps))
 
