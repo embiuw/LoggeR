@@ -27,21 +27,8 @@
 
 readLoggerTable <- function(theDB='Midnatsol_20191122', theTable='GpsData',
                        to.spatial=F, int=1) {
-  ##require(RODBC)
-  ##con <- odbcConnect(theDB)
-
-  require(DBI)
-  require(odbc)
-
-  running <- Sys.info()[["machine"]]
-  if(running=="x86") {
-    con <- dbConnect(odbc::odbc(), theDB)
-  } else {
-    theDB <- paste(thePath, theDB, sep='/')
-    con <- dbConnect(drv = odbc(), .connection_string = paste0("Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=",
-                                                               theDB,
-                                                               ";"))
-  }
+  require(RODBC)
+  con <- odbcConnect(theDB)
 
   cat('Reading', theTable, 'data from', theDB, '(Can be time consuming for large datafiles....)\n')
   flush.console()
