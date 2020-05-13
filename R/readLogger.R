@@ -25,9 +25,7 @@
 
 readLoggerTable <- function(theDB, theTable='GpsData',
                             path, to.spatial=F, int=1) {
-  ##require(RODBC)
-  ##con <- odbcConnect(theDB)
-
+  
   require(DBI)
   require(odbc)
 
