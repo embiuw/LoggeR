@@ -27,8 +27,22 @@
 
 readLoggerTable <- function(theDB='Midnatsol_20191122', theTable='GpsData',
                        to.spatial=F, int=1) {
-  require(RODBC)
-  con <- odbcConnect(theDB)
+  ##require(RODBC)
+  ##con <- odbcConnect(theDB)
+
+  require(DBI)
+  require(odbc)
+
+  running <- Sys.info()[["machine"]]
+  if(running=="x86") {
+    con <- dbConnect(odbc::odbc(), theDB)
+  } else {
+    theDB <- paste(thePath, theDB, sep='/')
+    con <- dbConnect(drv = odbc(), .connection_string = paste0("Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=",
+                                                               theDB,
+                                                               ";"))
+  }
+
   cat('Reading', theTable, 'data from', theDB, '(Can be time consuming for large datafiles....)\n')
   flush.console()
   qry <- sqlQuery(con, paste('SELECT * FROM', theTable), as.is=T)
@@ -198,12 +212,12 @@ readLogger <- function(DB='Midnatsol_20191122', whales=T, birds=T,
    common <- gsub('S ', 'Southern ', common)
    common <- gsub('Black brow', 'Black-browed', common)
 
-   names(bsight)[match(c("PT-Stormzy", "PT_Diving", "PT_Other", "PG-Linux", "PG-BigMac", "FL-South",
-                    "PRI-Skua", "PRI-KelpGull", "PRI-Shag", "PRI-Tern",
-                    "PRI-Shearwater"), names(bsight))] <- c('PT-Storm', 'PT-Diving', 'PT-Other', 'PG-Gentoo',
-                                                       'PG-Mac', 'PRO-Fulmar',
-                                                       'ST-Skua', 'LA-KelpGull',
-                                                       'PH-Shag', 'LA-Tern', 'PRO-Shearwater')
+   # names(bsight)[match(c("PT-Stormzy", "PT_Diving", "PT_Other", "PG-Linux", "PG-BigMac", "FL-South",
+   #                  "PRI-Skua", "PRI-KelpGull", "PRI-Shag", "PRI-Tern",
+   #                  "PRI-Shearwater"), names(bsight))] <- c('PT-Storm', 'PT-Diving', 'PT-Other', 'PG-Gentoo',
+   #                                                     'PG-Mac', 'PRO-Fulmar',
+   #                                                     'ST-Skua', 'LA-KelpGull',
+   #                                                     'PH-Shag', 'LA-Tern', 'PRO-Shearwater')
    if(length(grep('Fulm', names(bsight)))>1) {
      which.fulm <- grep('Fulm', names(bsight))
      bsight[,which.fulm[1]] <- apply(bsight[,which.fulm], 1, sum, na.rm=T)
@@ -212,12 +226,13 @@ readLogger <- function(DB='Midnatsol_20191122', whales=T, birds=T,
 
 
    if(class(bsnap)=='data.frame') {
-     names(bsnap)[match(c("PT-Stormzy", "PT_Diving", "PT_Other", "PG-Linux", "PG-BigMac", "FL-South",
-                          "PRI-Skua", "PRI-KelpGull", "PRI-Shag", "PRI-Tern",
-                           "PRI-Shearwater"), names(bsnap))] <- c('PT-Storm', 'PT-Diving', 'PT-Other', 'PG-Gentoo',
-                                                                   'PG-Mac', 'PRO-Fulmar',
-                                                                   'ST-Skua', 'LA-KelpGull',
-                                                                   'PH-Shag', 'LA-Tern', 'PRO-Shearwater')
+     ##names(bsnap)[match(c("PT-Stormzy", "PT_Diving", "PT_Other", "PG-Linux", "PG-BigMac", "FL-South",
+     ##                      "PRI-Skua", "PRI-KelpGull", "PRI-Shag", "PRI-Tern",
+     ##                       "PRI-Shearwater"), names(bsnap))] <- c('PT-Storm', 'PT-Diving', 'PT-Other', 'PG-Gentoo',
+     ##                                                               'PG-Mac', 'PRO-Fulmar',
+     ##                                                               'ST-Skua', 'LA-KelpGull',
+     ##                                                               'PH-Shag', 'LA-Tern', 'PRO-Shearwater')
+
      if(length(grep('Fulm', names(bsnap)))>1) {
        which.fulm <- grep('Fulm', names(bsnap))
        bsnap[,which.fulm[1]] <- apply(bsnap[,which.fulm], 1, sum, na.rm=T)
@@ -225,12 +240,13 @@ readLogger <- function(DB='Midnatsol_20191122', whales=T, birds=T,
      }
    }
 
-   species[match(c("PT-Stormzy", "PT_Diving", "PT_Other", "PG-Linux", "PG-BigMac", "FL-South",
-                         "PRI-Skua", "PRI-KelpGull", "PRI-Shag", "PRI-Tern",
-                         "PRI-Shearwater"), species)] <- c('PT-Storm', 'PT-Diving', 'PT-Other', 'PG-Gentoo',
-                                                                 'PG-Mac', 'PRO-Fulmar',
-                                                                 'ST-Skua', 'LA-KelpGull',
-                                                                 'PH-Shag', 'LA-Tern', 'PRO-Shearwater')
+   ##species[match(c("PT-Stormzy", "PT_Diving", "PT_Other", "PG-Linux", "PG-BigMac", "FL-South",
+   ##                       "PRI-Skua", "PRI-KelpGull", "PRI-Shag", "PRI-Tern",
+   ##                      "PRI-Shearwater"), species)] <- c('PT-Storm', 'PT-Diving', 'PT-Other', 'PG-Gentoo',
+   ##                                                               'PG-Mac', 'PRO-Fulmar',
+   ##                                                               'ST-Skua', 'LA-KelpGull',
+   ##                                                               'PH-Shag', 'LA-Tern', 'PRO-Shearwater')
+
    common <- paste(common, unlist(lapply(species, function(x) unlist(strsplit(unlist(strsplit(x, '-'))[1], '_'))[1])))
 
    common <- gsub('AL', 'albatross', common)
@@ -258,6 +274,20 @@ readLogger <- function(DB='Midnatsol_20191122', whales=T, birds=T,
    birdSpecies <- data.frame(Code=species, CommonName=common, stringsAsFactors=F)
    birdSpecies <- birdSpecies[which(!is.na(match(birdSpecies$Code, names(bsight)))),]
 
+
+   birdSpecies$CommonName <- gsub('Fulmar', 'Southern fulmar', birdSpecies$CommonName)
+   birdSpecies$CommonName <- gsub('White ', 'White-chinned ', birdSpecies$CommonName)
+   birdSpecies$CommonName <- gsub('Softplumaged ', 'Soft-plumaged ', birdSpecies$CommonName)
+   birdSpecies$CommonName <- gsub('Slender ', 'Slender-billed ', birdSpecies$CommonName)
+   birdSpecies$CommonName <- gsub('Broad ', 'Broad-billed ', birdSpecies$CommonName)
+   birdSpecies$CommonName <- gsub('Antarc ', 'Antarctic ', birdSpecies$CommonName)
+   birdSpecies$CommonName <- gsub('Salvin ', 'Salvin´s ', birdSpecies$CommonName)
+   birdSpecies$CommonName <- gsub('Prion/BluePetrel prion', 'Prion/Blue petrel', birdSpecies$CommonName)
+   birdSpecies$CommonName <- gsub('BluePetrel prion', 'Blue petrel', birdSpecies$CommonName)
+   birdSpecies$CommonName <- gsub('Blue-petrel prion', 'Blue petrel', birdSpecies$CommonName)
+   birdSpecies$CommonName <- gsub('Shearwater', 'Great shearwater', birdSpecies$CommonName)
+   birdSpecies$CommonName[match('Other', birdSpecies$CommonName)] <- 'Other procelariiform'
+   birdSpecies$CommonName <- gsub('Mac ', 'Macaroni ', birdSpecies$CommonName)
   }
 
   int <- interval/as.numeric(diff(gps$PCTime)[1])
