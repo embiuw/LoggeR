@@ -5,15 +5,22 @@
 #' @param coast.data Path to a valid OGR data source representing coastline.
 #' This should be the \code{'ADD_DerivedLowresBasemap.shp'} in the \code{SimpleBasemap}
 #' subdirectory of the \code{Quantarctica} package. Change the path to the correct path on your system.
+#' @param crs CRS string for coast map object. If set to NA, the function looks for this in the loaded coast object.
 #' @details Finds the closest coastline along the extended bearing to a detection.
 #' @return The entire original database, with a new variable, \code{land}, in the sightings table
 #' @export
 
-coast.dist <- function(data=fram, max.distance=10000,
-                       coast.data='ADD_DerivedLowresBasemap.shp') {
+coast.dist <- function(data=fram, max.distance=10000, coast.data='ADD_DerivedLowresBasemap.shp',
+                       crs="+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0") {
   require(rgdal)
+  require(circular)
   coast <- readOGR(coast.data)
-  crs <- proj4string(coast)
+
+  if(is.na(crs)) {
+    crs <- proj4string(coast)
+  }
+
+  if(is.na(crs)) stop('No CRS string provided')
 
   sightings <- data$sightings
   gps <- data$gps
@@ -54,7 +61,7 @@ coast.dist <- function(data=fram, max.distance=10000,
   }
   close(pb)
   sightings$land <- rep(NA, nrow(sightings))
-  sigtings$land[which.valid] <- land
+  sightings$land[which.valid] <- land
   data$sightings <- sightings
   data
 }
