@@ -162,8 +162,9 @@ readLogger <- function(DB='Midnatsol_20191122', whales=T, birds=T,
     bsight <- readLoggerTable(theDB=DB, theTable='Sightings_Seabirds')
     bsnap <- try(readLoggerTable(theDB=DB, theTable='Sightings_SeabirdsSnapshot'), silent=T)
     if(class(bsnap)!='data.frame') {
-      bsnap <- bsight[grep('SNAPSHOT', bsight$Comments),]
-      bsight <- bsight[-grep('SNAPSHOT', bsight$Comments),]
+      bsnap <- try(readLoggerTable(theDB=DB, theTable='Sightings_SeabirdSnapshot'), silent=T)
+##      bsnap <- bsight[grep('SNAPSHOT', bsight$Comments),]
+##      bsight <- bsight[-grep('SNAPSHOT', bsight$Comments),]
     }
 
     names(bsight) <- gsub(' ', '_', names(bsight))
